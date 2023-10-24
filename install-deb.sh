@@ -26,10 +26,6 @@ if [ ! -z ${help+x} ]
 then
         echo "This script is intended to install the FusionInventory agent on Debian/Ubuntu distribution."
         echo "The --version parameter is used to pass the target version in form of 2.5.1-1 or 2.5.1 (if no sub-version exists)."
-        echo "The --taskcollect parameter is used to specify if the collect task must be instaled. It is $true by default."
-        echo "The --tasknetwork parameter is used to specify if the network task must be instaled. It is $true by default."
-        echo "The --taskdeploy parameter is used to specify if the deploy task must be instaled. It is $true by default."
-        echo "The --taskesx parameter is used to specify if the esx task must be instaled. It is $true by default."
 	echo "The --agentconfig parameter is used to configure the agent. Use it to adapt the installation to your environment."
 	echo "   All parameters from http://fusioninventory.org/documentation/agent/man/agent.cfg.html are available."
 	echo "   Parameters have to be separated by a pipe | in the form of"
@@ -42,7 +38,7 @@ taskscollect=${taskcollect:-$true}
 tasksnetwork=${tasknetwork:-$true}
 tasksdeploy=${taskdeploy:-$true}
 tasksesx=${taskesx:-$true}
-agentconfig=${agentconfig:-"server = https://myserver.mydomain.com/glpi/plugins/fusioninventory/|no-ssl-check 1"}
+agentconfig=${agentconfig:-"server = http://192.168.0.88/plugins/fusioninventory/|no-ssl-check 1"}
 
 # Test if wget is installed.
 type wget >/dev/null 2>&1 || { echo >&2 "I require wget but it's not installed.  Aborting."; exit 1; }
@@ -80,14 +76,6 @@ sleep 2
 echo
 echo
 
-if $taskcollect
-then
-	echo "collect task is requested"
-	wget $downloadurlcollect -q --show-progress
-	dpkg -i fusioninventory-agent-task-collect_$version\_all.deb
-else
-        echo "collect task is NOT requested"
-fi
 
 sleep 2
 echo
